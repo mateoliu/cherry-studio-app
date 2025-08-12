@@ -1,0 +1,51 @@
+name: Build Android (Simple)
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_profile:
+        description: 'Build profile (preview/production)'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+        - preview
+        - production
+
+jobs:
+  build:
+    name: EAS Build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: 🏗 Enable Corepack
+        run: corepack enable
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 🔨 Generate database
+        run: npx drizzle-kit generate
+
+      - name: 🚀 Build with EAS
+        run: |
+          echo "🚀 开始构建 Android 应用..."
+          echo "Profile: ${{ github.event.inputs.build_profile }}"
+          echo ""
+          echo "注意：如果构建失败提示需要密钥，请先运行 'Generate Android Keystore' workflow"
+          echo ""
+          eas build --platform android --profile ${{ github.event.inputs.build_profile }} --non-interactive

@@ -18,7 +18,7 @@ export default {
         foregroundImage: './src/assets/images/adaptive-icon.png',
         backgroundColor: '#F65D5D'
       },
-      package: 'com.anonymous.cherrystudio'
+      package: 'com.aaz.cherrystudio'
     },
     plugins: [
       ['expo-build-properties', { ios: { deploymentTarget: '15.5' } }],
@@ -68,7 +68,7 @@ export default {
     },
     extra: {
       eas: {
-        projectId: '80096eaf-3ad0-4b87-a466-15f04da1bacc'
+        projectId: '47a38de7-ac16-4582-b019-27dd9f7c7cfb'
       }
     }
   }
